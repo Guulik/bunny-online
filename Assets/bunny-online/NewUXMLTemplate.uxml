@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:GroupBox style="height: 100%; justify-content: flex-end;">
+        <ui:GroupBox style="height: 40%; justify-content: center; align-items: center; position: relative; flex-direction: row;">
+            <ui:GroupBox style="height: 100%; justify-content: center; align-items: center; width: 50%; background-color: rgba(0, 0, 0, 0); left: auto;">
+                <ui:VisualElement style="background-color: rgba(255, 255, 255, 255); align-items: auto; width: 120px; height: 120px; border-top-left-radius: 100%; border-bottom-left-radius: 100%; border-top-right-radius: 100%; border-bottom-right-radius: 100%;" />
+            </ui:GroupBox>
+            <ui:GroupBox style="height: 100%; justify-content: flex-start; align-items: auto; width: 50%; background-color: rgba(0, 0, 0, 0);" />
+        </ui:GroupBox>
+    </ui:GroupBox>
+</ui:UXML>
