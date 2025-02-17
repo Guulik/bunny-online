@@ -1,12 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using FishNet.Object;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 //deprecated
-public class PlayerInteract : MonoBehaviour
+public class PlayerInteract : NetworkBehaviour
 {
     float interactRange = 1f;
 
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (!IsOwner) return;
+        TryInteract();
+    }
+
+    
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))

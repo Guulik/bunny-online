@@ -8,14 +8,7 @@ namespace Dolls.Movement
     {
         [SerializeField] [Range(0, float.MaxValue)]
         private float moveSpeed = 1f;
-
-        [SerializeField] [Range(0, float.MaxValue)]
-        private float sensitivity = 1f;
-
-        [SerializeField] [Range(0, float.MaxValue)]
-        private float jumpStrength = 1f;
-
-        [SerializeField] [Range(0f, 90f)] private float cameraRotationLimit;
+        
         private Transform _cameraTransform;
         private float _currentVerticalAngle;
 
@@ -25,6 +18,8 @@ namespace Dolls.Movement
         private MovementData _lastMovementData;
 
         private Rigidbody _rigidbody;
+        
+        private Animator _animator;
 
 
         private void Awake()
@@ -32,18 +27,14 @@ namespace Dolls.Movement
             _input = new PlayerInput();
             _rigidbody = GetComponentInChildren<Rigidbody>();
             _cameraTransform = GetComponentInChildren<Camera>().transform;
+            _animator = GetComponentInChildren<Animator>();
         }
 
         private void FixedUpdate()
         {
             Move(_lastMovementData.MoveDirection);
         }
-
-        private void LateUpdate()
-        {
-            HorizontalRotate(_lastMovementData.RotateDirection);
-            VerticalRotate(_lastMovementData.RotateDirection);
-        }
+        
 
         public override void OnStartClient()
         {
@@ -63,52 +54,27 @@ namespace Dolls.Movement
             var moveInput = context.ReadValue<Vector2>();
             _lastMovementData.MoveDirection = moveInput;
         }
-
-
-        public void OnRotate(InputAction.CallbackContext context)
-        {
-            if (!IsOwner) return;
-            var rotateInput = context.ReadValue<Vector2>();
-            _lastMovementData.RotateDirection = rotateInput;
-        }
-
+        
         private void Move(Vector2 direction)
         {
             Vector2 normalizedSpeed = direction.normalized;
+            _rigidbody.linearVelocity = new Vector2(normalizedSpeed.x * moveSpeed, normalizedSpeed.y * moveSpeed);
 
+            AnimationChange(direction);
+            /*
             var velocity = new Vector3(normalizedSpeed.x * moveSpeed, _rigidbody.linearVelocity.y,
                 normalizedSpeed.y * moveSpeed);
 
             velocity = transform.TransformDirection(velocity);
 
-            _rigidbody.linearVelocity = velocity;
+            _rigidbody.linearVelocity = velocity;*/
         }
 
-        private void HorizontalRotate(Vector2 direction)
+        private void AnimationChange(Vector2 movement)
         {
-            transform.Rotate(Vector3.up * (direction.x * sensitivity));
-        }
-
-        private void VerticalRotate(Vector2 direction)
-        {
-            _currentVerticalAngle -= direction.y * sensitivity;
-            _currentVerticalAngle = Mathf.Clamp(_currentVerticalAngle, -cameraRotationLimit, cameraRotationLimit);
-
-            _cameraTransform.localRotation = Quaternion.Euler(_currentVerticalAngle, 0f, 0f);
-        }
-        
-        private void Jump()
-        {
-            var jumpForce = Vector3.zero;
-
-            if (_isGrounded) jumpForce = Vector3.up * jumpStrength;
-            _rigidbody.AddForce(jumpForce, ForceMode.Impulse);
-        }
-
-        private void OnJump(InputAction.CallbackContext context)
-        {
-            if (!IsOwner) return;
-            Jump();
+            _animator.SetBool("isGoing", movement != Vector2.zero);
+            _animator.SetFloat("X", movement.x < 0 ? -1 : movement.x > 0 ? 1 : 0);
+            _animator.SetFloat("Y", movement.y < 0 ? -1 : movement.y > 0 ? 1 : 0);
         }
 
         public void SetGrounded(bool state)
