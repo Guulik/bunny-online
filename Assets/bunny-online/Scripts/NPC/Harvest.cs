@@ -75,11 +75,14 @@ namespace NPC
             SpawnRewardServerRpc();
         }
         
-        //[ServerRpc(RequireOwnership = false)]
+        [ServerRpc(RequireOwnership = false)]
         private void SpawnRewardServerRpc()
         { 
             Instantiate(_reward, transform.position, Quaternion.identity);
             _reward.transform.localPosition = new Vector3(2f, 0.5f, 0f);
+            
+            // Спавним объект в сети, чтобы он появился на всех клиентах
+            ServerManager.Spawn(_reward);
             SpawnRewardObserversRpc();
         }
 
