@@ -15,15 +15,15 @@ namespace NPC
         private void OnEnable()
         {
             _playerInput.Player.Interact.started += Interact;
-            TakeItem += PlayerInventory.Inventory.RemoveItem;
-            GiveItem += PlayerInventory.Inventory.ReceiveItem;
+           //TakeItem += _playerInventory.RemoveItem;
+           //GiveItem += _playerInventory.ReceiveItem;
         }
 
         private void OnDisable()
         {
             _playerInput.Player.Interact.started -= Interact;
-            TakeItem -= PlayerInventory.Inventory.RemoveItem;
-            GiveItem -= PlayerInventory.Inventory.ReceiveItem;
+            //TakeItem -= _playerInventory.RemoveItem;
+            //GiveItem -= _playerInventory.ReceiveItem;
         }
 
         public void Interact(InputAction.CallbackContext context)
@@ -53,7 +53,8 @@ namespace NPC
                 {
                     ShowChatBubble("Вот спасибо!");
                     isFed = true;
-                    OnTakeItem(food);
+                    _playerInventory.RemoveItem(food);
+                   // OnTakeItem(food);
                 }
                 else
                 {
@@ -63,18 +64,20 @@ namespace NPC
         }
         private void ChangeMilk()
         {
-            OnTakeItem(emptyMilk);
-            OnGiveItem(filledMilk);
+            _playerInventory.RemoveItem(emptyMilk);
+            _playerInventory.ReceiveItem(filledMilk);
+            //OnTakeItem(emptyMilk);
+            //OnGiveItem(filledMilk);
         }
 
         private bool CheckFood()
         {
-            return PlayerInventory.Inventory.ActiveItem == food;
+            return _playerInventory.ActiveItem == food;
         }
 
         private bool CheckBottle()
         {
-            return PlayerInventory.Inventory.ActiveItem == emptyMilk;
+            return _playerInventory.ActiveItem == emptyMilk;
         }
     }
 }

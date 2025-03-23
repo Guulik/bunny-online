@@ -9,22 +9,27 @@ using UnityEngine.InputSystem;
 
 namespace NPC
 {
-    public class Chicken : Npc, IInteractable
+    public class House : Npc, IInteractable
     {
-        [SerializeField] private GameObject reward;
+        //[SerializeField] private GameObject reward;
         [SerializeField] private Item requiredPass;
         [SerializeField] private int scoreReward = 10; // Количество очков за передачу
 
+        private void Awake()
+        {
+            _playerInput = new PlayerInput();
+            _playerInput.Enable();
+        }
         private void OnEnable()
         {
             _playerInput.Player.Interact.started += Interact;
-            TakeItem += _playerInventory.RemoveItem;
+           // TakeItem += _playerInventory.RemoveItem;
         }
 
         private void OnDisable()
         {
             _playerInput.Player.Interact.started -= Interact;
-            TakeItem -= _playerInventory.RemoveItem;
+            //TakeItem -= _playerInventory.RemoveItem;
         }
 
         public void Interact(InputAction.CallbackContext context)
@@ -37,9 +42,9 @@ namespace NPC
             if (!_canInteract) return;
             
             if (CheckPass())
-                GiveEgg();
+                GiveScore();
             else 
-                ShowChatBubble("Принеси пожалуйста Млеко");
+                ShowChatBubble("Надо Млеко");
         }
         
         private bool CheckPass()
@@ -50,18 +55,14 @@ namespace NPC
 
         private void TakeMilk()
         {
-            OnTakeItem(requiredPass);
+            _playerInventory.RemoveItem(requiredPass);
+            //OnTakeItem(requiredPass);
         }
-        private void GiveEgg()
+        private void GiveScore()
         {
             if (CheckPass())
             {
                 TakeMilk();
-                
-                ShowChatBubble("Держи яйко");
-                
-                GameObject rewardObject = Instantiate(reward, transform.position, quaternion.identity);
-                rewardObject.transform.localPosition = new Vector3(2f, 0.5f, 0f);
                 
                 // Начисляем очки
                 DollScore.Instance.AddScore(scoreReward);

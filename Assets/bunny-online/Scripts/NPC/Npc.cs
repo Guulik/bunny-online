@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using BunnyPlayer;
 using Items;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -10,8 +11,9 @@ using Random = UnityEngine.Random;
 namespace NPC
 {
     public class Npc : Interactable
-    {
-        [SerializeField] protected bool isAbleToMove = false;
+    { 
+        [SerializeField]protected bool Movable = false;
+        protected bool isAllowedToMove = false;
         [SerializeField] private float moveSpeed;
         [SerializeField] private float movingTime = 1f;
         [SerializeField] private float stopTime = 1f;
@@ -20,6 +22,9 @@ namespace NPC
         private Vector2 circleRadius = Vector2.zero;
         private Coroutine _coroutine;
         private Rigidbody2D _rb2d;
+        
+        private GameObject _player;
+        protected PlayerInventory _playerInventory;  // Инвентарь конкретного игрока
         
         private InteractUI _interactionMarker;
         private Animator _animator;
@@ -31,10 +36,9 @@ namespace NPC
         {
             _rb2d = GetComponent<Rigidbody2D>();
             _rb2d.gravityScale = 0f;
-            _interactionMarker = GetComponentInChildren<InteractUI>();
+            //_interactionMarker = GetComponentInChildren<InteractUI>();
             _animator = GetComponent<Animator>();
             _sprite = GetComponent<SpriteRenderer>();
-            _player = GameObject.FindGameObjectWithTag("Player");
             _playerInput = new PlayerInput();
             _playerInput.Enable();
         }
@@ -44,19 +48,27 @@ namespace NPC
         {
             if (IsPlayerNearby())
             {
-                _interactionMarker.Show();
-                isAbleToMove = false;
+                //_interactionMarker.Show();
+                isAllowedToMove = false;
                 _canInteract = true;
+                
+                if (_player != null && _playerInventory == null)
+                {
+                    _playerInventory = _player.GetComponentInChildren<PlayerInventory>();
+                }
             }
             else
             {
-                _interactionMarker.Hide();
-                isAbleToMove = true;
+             // _interactionMarker.Hide();
+                if (Movable)
+                {
+                    isAllowedToMove = true;
+                }
                 _canInteract = false;
             }
 
             
-            if (isAbleToMove)
+            if (isAllowedToMove)
                 _coroutine ??= StartCoroutine(Move());
         }
 
@@ -92,8 +104,9 @@ namespace NPC
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
             foreach (var collider in colliders)
             {
-                if (collider.gameObject == _player)
+                if (collider.CompareTag("Player"))
                 {
+                    _player = collider.gameObject;
                     return true;
                 }
             }

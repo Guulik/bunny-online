@@ -17,7 +17,7 @@ namespace Dolls.Movement
 
         private MovementData _lastMovementData;
 
-        private Rigidbody _rigidbody;
+        private Rigidbody2D _rigidbody;
         
         private Animator _animator;
 
@@ -25,7 +25,7 @@ namespace Dolls.Movement
         private void Awake()
         {
             _input = new PlayerInput();
-            _rigidbody = GetComponentInChildren<Rigidbody>();
+            _rigidbody = GetComponentInChildren<Rigidbody2D>();
             _cameraTransform = GetComponentInChildren<Camera>().transform;
             _animator = GetComponentInChildren<Animator>();
         }

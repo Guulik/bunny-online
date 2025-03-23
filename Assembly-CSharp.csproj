@@ -74,6 +74,7 @@
     <Compile Include="Assets\External Assets\FishNet\Upgrading\MirrorUpgrade.cs" />
     <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Scripts\Dolls\Rendering\DollRendering.cs" />
     <Compile Include="Assets\bunny-online\Scripts\NPC\Harvest.cs" />
+    <Compile Include="Assets\bunny-online\Scripts\NPC\House.cs" />
     <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Patterns\Singletons\SingletonNetworkBehavior.cs" />
     <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Patterns\Singletons\SingletonMonoBehavior.cs" />
     <Compile Include="Assets\bunny-online\Scripts\ChatBubbleHandler.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Assets\bunny-online\Scripts\Items\Item.cs" />
     <Compile Include="Assets\bunny-online\Scripts\Dialogue\TestingDialogue.cs" />
     <Compile Include="Assets\External Assets\FishNet\Plugins\FishySteamworks\Core\ClientHostSocket.cs" />
+    <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Scripts\Dolls\Score\DollScore.cs" />
     <Compile Include="Assets\bunny-online\Scripts\ChatBubble.cs" />
     <None Include="Assets\External Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\External Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />

@@ -10,27 +10,18 @@ public class Doll : NetworkBehaviour
 {
     
     [SerializeField] private Camera characterCamera;
-    //[SerializeField] private AudioListener audioListener;
+
     [SerializeField] private DollMovement dollMovement;
 
-    //[field: SerializeField] public DollAttack DollAttack { get; private set; }
-    //[field: SerializeField] public DollHealth DollHealth { get; private set; }
-
-    //[FormerlySerializedAs("healthBar")] [SerializeField] private GameObject HUD;
-
-    //[SerializeField] private SpriteRenderer characterSpriteRenderer;
 
     public override void OnStartClient()
     {
         if (!IsOwner)
         {
             characterCamera.gameObject.SetActive(false);
-            //spriteBillboard.enabled = true;
-            //HUD.SetActive(false);
-            //characterSpriteRenderer.enabled = true;
+
         }
         
-        //audioListener.enabled = true;
 
         StartCoroutine(WaitAndAssignMainCamera());
     }

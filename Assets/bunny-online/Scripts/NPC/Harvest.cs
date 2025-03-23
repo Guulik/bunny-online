@@ -14,9 +14,12 @@ namespace NPC
         [SerializeField] private GameObject _reward;
         private PlayerInput _playerInput;
 
+        private GameObject _player;
+        protected PlayerInventory _playerInventory;  // Инвентарь конкретного игрока
+        
+        
         private void Awake()
         {
-            _player = GameObject.FindGameObjectWithTag("Player");
             _interactionMarker = GetComponentInChildren<InteractUI>();
             _playerInput = new PlayerInput();
             _playerInput.Enable();
@@ -38,6 +41,11 @@ namespace NPC
             {
                 _interactionMarker.Show();
                 _canInteract = true;
+                
+                if (_player != null && _playerInventory == null)
+                {
+                    _playerInventory = _player.GetComponentInChildren<PlayerInventory>();
+                }
             }
             else
             {
@@ -64,13 +72,13 @@ namespace NPC
             }
             else
             {
-                _player.GetComponent<PlayerInventory>().ShowChatBubble("Нужен топорик"); // not the best approach
+                _playerInventory.ShowChatBubble("Нужен топорик"); // не лучшее решение...
             }
         }
 
         private bool IsPlayerHaveAxe()
         {
-            return PlayerInventory.Inventory.ActiveItem == _playerAxe;
+            return _playerInventory.ActiveItem == _playerAxe;
         }
 
         private bool IsPlayerNearby()
@@ -78,12 +86,12 @@ namespace NPC
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
             foreach (var collider in colliders)
             {
-                if (collider.gameObject == _player)
+                if (collider.CompareTag("Player"))
                 {
+                    _player = collider.gameObject;
                     return true;
                 }
             }
-
             return false;
         }
     }

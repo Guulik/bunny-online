@@ -8,7 +8,6 @@ namespace BunnyPlayer
 {
     public class PlayerInventory : MonoBehaviour
     {
-        public static PlayerInventory Inventory;
         private PlayerInput _playerInput;
 
         [SerializeField] private GameObject handledItem;
@@ -27,7 +26,6 @@ namespace BunnyPlayer
 
         private void Awake()
         {
-            Inventory = this;
             Items = new List<Item>();
             _handledItemSprite = handledItem.GetComponent<SpriteRenderer>();
             _playerInput = new PlayerInput();
