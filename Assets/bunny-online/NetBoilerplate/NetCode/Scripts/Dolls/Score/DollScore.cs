@@ -10,20 +10,20 @@ namespace Dolls.Health
     public class DollScore : NetworkBehaviour
     {
         
-        public static DollScore Instance;
-        private int score;
-        public static event Action<int> OnItemPassed; // Новый ивент
-        
-        private void Awake()
-        {
-            if (Instance == null) Instance = this;
-            else Destroy(gameObject);
-        }
+        [SerializeField]private int score;
+        private Player _playerOwner;
+        public static event Action<TakeScoreEventArgs> OnTakeScore;
         
         public void AddScore(int amount)
         {
             score += amount;
-            OnItemPassed?.Invoke(score); // Вызываем ивент, передавая обновленный счет
+            Debug.Log(_playerOwner);
+            OnTakeScore?.Invoke(new TakeScoreEventArgs(_playerOwner, amount));
+        }
+        public void SetPlayerOwner(Player newOwner)
+        {
+            Debug.Log(newOwner);
+            _playerOwner = newOwner;
         }
     }
 }

@@ -44,14 +44,25 @@ namespace BunnyPlayer
             _playerInput.Player.DropItem.started -= DropItem;
         }
 
+        public bool IsHave(Item item)
+        {
+            return Items.Exists(i => i == item);
+        }
         public void ReceiveItem(Item item)
         {
             Debug.Log("Recieved:" + item);
             
-            if (!Items.Find(i => i == item))
-                Items.Add(item);
-            
-            Items.Find(i => i == item).count++;
+            // Если предмет уже есть в инвентаре, увеличиваем его количество
+            if (Items.Exists(i => i == item))
+            {
+                var existingItem = Items.Find(i => i == item);
+                existingItem.count = 1;  // Устанавливаем count в 1, чтобы только один предмет был в руке
+                return; // Предмет не добавляем повторно
+            }
+
+            // Добавляем новый предмет в инвентарь
+            Items.Add(item);
+            item.count = 1; // Устанавливаем count в 1 для нового предмета
             
             SetActiveItem(item);
         }
@@ -59,13 +70,16 @@ namespace BunnyPlayer
         public void RemoveItem(Item item)
         {
             var itemInstance = Items.Find(i => i == item);
-            itemInstance.count--;
-            if (itemInstance.count > 0) return;
-                    
-            Items.Remove(item);
-            if (ActiveItem == item)
-                ActiveItem = Items.LastOrDefault();
-            SetActiveItem(ActiveItem);
+    
+            // Если предмет в инвентаре, и его count равен 1, удаляем его
+            
+            if (itemInstance != null)
+            {
+                Items.Remove(item);
+                if (ActiveItem == item) ActiveItem = Items.LastOrDefault();
+                SetActiveItem(ActiveItem);
+            }
+            
 
             //Debug.Log(ActiveItem);
         }
@@ -83,28 +97,6 @@ namespace BunnyPlayer
             _handledItemSprite.sprite = ActiveItem.sprite;
         }
 
-        public void ChangeActiveItemLeft()
-        {
-            if (IsInventoryEmpty()) return;
-
-            var calculatedPos = Items.IndexOf(ActiveItem) - 1;
-            int newItemPos =
-                calculatedPos < 0 ? 0 : calculatedPos >= Items.Count ? Items.Count - 1 : calculatedPos;
-
-            var newActiveItem = Items.Count != 0 ? Items[newItemPos] : null;
-            SetActiveItem(newActiveItem);
-        }
-        public void ChangeActiveItemRight()
-        {
-            if (IsInventoryEmpty()) return;
-
-            var calculatedPos = Items.IndexOf(ActiveItem) + 1;
-            int newItemPos =
-                calculatedPos < 0 ? 0 : calculatedPos >= Items.Count ? Items.Count - 1 : calculatedPos;
-
-            var newActiveItem = Items.Count != 0 ? Items[newItemPos] : null;
-            SetActiveItem(newActiveItem);
-        }
         private void ChangeActiveItem(InputAction.CallbackContext context)
         {
             if (IsInventoryEmpty()) return;

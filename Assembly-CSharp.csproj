@@ -56,6 +56,7 @@
     <Compile Include="Assets\External Assets\FishNet\Upgrading\UpgradeFromMirrorMenu.cs" />
     <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Scripts\Dolls\Rendering\SpriteBillboard.cs" />
     <Compile Include="Assets\External Assets\FishNet\Plugins\FishySteamworks\Core\BidirectionalDictionary.cs" />
+    <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Scripts\Dolls\Score\TakeScoreEventArgs.cs" />
     <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Scripts\Timer.cs" />
     <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Inputs\PlayerInput.cs" />
     <Compile Include="Assets\External Assets\FishNet\Plugins\FishySteamworks\Core\ServerSocket.cs" />

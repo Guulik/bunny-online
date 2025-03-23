@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 168310468849241336}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.5540004, y: -0.89799994, z: 1.06}
+  m_LocalPosition: {x: 1.57, y: 0.26, z: 1.06}
   m_LocalScale: {x: 0.29999998, y: 0.29999998, z: 0.29999998}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -123,7 +123,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0.9597032, b: 0.71132076, a: 1}
+  m_Color: {r: 0.22022964, g: 0.42288503, b: 0.9528302, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -282,13 +282,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bee9119ad9141ccbaa2c69613c10102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactRange: 1
+  interactRange: 2
   Movable: 0
   moveSpeed: 0
   movingTime: 1
   stopTime: 1
-  requiredPass: {fileID: 11400000, guid: 60bf2c240ce29e341a7411b7f80298be, type: 2}
-  scoreReward: 10
+  _interactionMarker: {fileID: 8596300555292584210}
+  richItem: {fileID: 11400000, guid: 60bf2c240ce29e341a7411b7f80298be, type: 2}
+  richReward: 5
+  commonItem: {fileID: 11400000, guid: 975996f45303f0d43be6f370e551bf2f, type: 2}
+  commonReward: 1
 --- !u!50 &3499131155985499916
 Rigidbody2D:
   serializedVersion: 5

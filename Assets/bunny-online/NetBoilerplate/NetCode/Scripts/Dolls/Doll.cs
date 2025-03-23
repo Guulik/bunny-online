@@ -13,6 +13,8 @@ public class Doll : NetworkBehaviour
 
     [SerializeField] private DollMovement dollMovement;
 
+    
+    [field: SerializeField] public DollScore DollScore { get; private set; }
 
     public override void OnStartClient()
     {

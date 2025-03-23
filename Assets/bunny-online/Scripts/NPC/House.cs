@@ -6,30 +6,32 @@ using Dolls.Health;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace NPC
 {
     public class House : Npc, IInteractable
     {
         //[SerializeField] private GameObject reward;
-        [SerializeField] private Item requiredPass;
-        [SerializeField] private int scoreReward = 10; // Количество очков за передачу
+        [SerializeField] private Item richItem;
+        [SerializeField] private int richReward = 5; 
+        [SerializeField] private Item commonItem;
+        [SerializeField] private int commonReward = 1;
 
         private void Awake()
         {
             _playerInput = new PlayerInput();
             _playerInput.Enable();
         }
+
         private void OnEnable()
         {
             _playerInput.Player.Interact.started += Interact;
-           // TakeItem += _playerInventory.RemoveItem;
         }
 
         private void OnDisable()
         {
             _playerInput.Player.Interact.started -= Interact;
-            //TakeItem -= _playerInventory.RemoveItem;
         }
 
         public void Interact(InputAction.CallbackContext context)
@@ -40,34 +42,37 @@ namespace NPC
         public void Interact()
         {
             if (!_canInteract) return;
-            
-            if (CheckPass())
-                GiveScore();
-            else 
-                ShowChatBubble("Надо Млеко");
-        }
-        
-        private bool CheckPass()
-        {
-                return _playerInventory.ActiveItem == requiredPass 
-                       && _playerInventory.ActiveItem.ToPass().isCorrect;
+
+            if (CheckMilk())
+            {
+                TakeRequiredItem(richItem);
+                GiveScore(richReward);
+            }
+
+            if (CheckBerry())
+            {
+                TakeRequiredItem(commonItem);
+                GiveScore(commonReward);
+            }
         }
 
-        private void TakeMilk()
+        private bool CheckMilk()
         {
-            _playerInventory.RemoveItem(requiredPass);
-            //OnTakeItem(requiredPass);
+            return _playerInventory.ActiveItem == richItem;
         }
-        private void GiveScore()
+        
+        private bool CheckBerry()
         {
-            if (CheckPass())
-            {
-                TakeMilk();
-                
-                // Начисляем очки
-                DollScore.Instance.AddScore(scoreReward);
-            }
+            return _playerInventory.ActiveItem == commonItem;
+        }
+
+        private void TakeRequiredItem(Item item)
+        {
+            _playerInventory.RemoveItem(item);
+        }
+        private void GiveScore(int score)
+        {
+            _dollScore.AddScore(score);
         }
     }
 }
-

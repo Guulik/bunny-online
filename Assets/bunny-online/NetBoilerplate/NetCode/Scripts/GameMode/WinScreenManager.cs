@@ -43,7 +43,12 @@ public class WinScreenManager : SingletonMonoBehavior<WinScreenManager>
         statisticsPanel.SetActive(true);
     }
 
-    public void CreateStatTable(Dictionary<Player, Statistic> statisticsPairs)
+    /*public void CreateStatTable(Dictionary<Player, Statistic> statisticsPairs)
+    {
+        foreach (var statisticPair in statisticsPairs)
+            entriesSpawner.AddNewEntry(statisticPair.Key, statisticPair.Value);
+    } */
+    public void CreateStatTable(Dictionary<Player, int> statisticsPairs)
     {
         foreach (var statisticPair in statisticsPairs)
             entriesSpawner.AddNewEntry(statisticPair.Key, statisticPair.Value);

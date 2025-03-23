@@ -6754,13 +6754,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactRange: 1
-  Movable: 0
-  moveSpeed: 0
+  Movable: 1
+  moveSpeed: 1
   movingTime: 1
   stopTime: 1
-  emptyMilk: {fileID: 0}
-  filledMilk: {fileID: 0}
-  food: {fileID: 0}
+  _interactionMarker: {fileID: 1031397608}
+  emptyMilk: {fileID: 11400000, guid: c2ca294422cf1c94ab3408636072f6e6, type: 2}
+  filledMilk: {fileID: 11400000, guid: 60bf2c240ce29e341a7411b7f80298be, type: 2}
+  food: {fileID: 11400000, guid: d882b6ad14851c54db88ecc981bff85c, type: 2}
 --- !u!58 &502056832
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6805,7 +6806,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502056828}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -8229,6 +8230,7 @@ MonoBehaviour:
   moveSpeed: 0
   movingTime: 1
   stopTime: 1
+  _interactionMarker: {fileID: 0}
   reward: {fileID: 0}
   requiredPass: {fileID: 0}
   scoreReward: 10
@@ -8519,6 +8521,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4837527815883474895, guid: 15c5188bf9e43f344b181908ab750e4d, type: 3}
   m_PrefabInstance: {fileID: 1557530337}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1563017566 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8596300555292584210, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+  m_PrefabInstance: {fileID: 2333320267141795320}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd8b3f1a67d78c54992f96f25710299d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1577333970
 GameObject:
   m_ObjectHideFlags: 0
@@ -26082,6 +26095,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Free_Chicken_House
       objectReference: {fileID: 0}
+    - target: {fileID: 2090657209260469007, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: interactRange
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090657209260469007, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: _interactionMarker
+      value: 
+      objectReference: {fileID: 1563017566}
+    - target: {fileID: 4873758035222192579, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873758035222192579, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.26
+      objectReference: {fileID: 0}
     - target: {fileID: 5078536414784768972, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.01
@@ -26121,6 +26150,18 @@ PrefabInstance:
     - target: {fileID: 5078536414784768972, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028828882213620338, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9528302
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028828882213620338, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: m_Color.g
+      value: 0.42288503
+      objectReference: {fileID: 0}
+    - target: {fileID: 7028828882213620338, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: m_Color.r
+      value: 0.22022964
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -4,12 +4,12 @@ namespace GameMode
 {
     public class StatisticChangedEventArgs : EventArgs
     {
-        public StatisticChangedEventArgs(Player player, Statistic statistic)
+        public StatisticChangedEventArgs(Player player, int score)
         {
             Player = player;
-            Statistic = statistic;
+            Score = score;
         }
         public Player Player { get; }
-        public Statistic Statistic { get; }
+        public int Score { get; }
     }
 }

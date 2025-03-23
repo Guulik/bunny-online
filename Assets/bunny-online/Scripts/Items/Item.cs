@@ -7,7 +7,7 @@ namespace Items
     {
         public string itemName;
         public Sprite sprite;
-        public GameObject prefab;
+        public GameObject prefab; 
         public int count = 0;
 
         public Item() {}

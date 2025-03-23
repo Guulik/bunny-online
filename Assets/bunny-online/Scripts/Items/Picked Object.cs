@@ -63,6 +63,8 @@ namespace Items
         public void Interact()
         {
             if(!_canInteract) return;
+
+            if (_playerInventory.IsHave(inventoryItem)) return;
             
             _playerInventory.ReceiveItem(inventoryItem);
             

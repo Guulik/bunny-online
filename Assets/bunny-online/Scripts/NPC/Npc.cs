@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using BunnyPlayer;
+using Dolls.Health;
 using Items;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -24,9 +25,10 @@ namespace NPC
         private Rigidbody2D _rb2d;
         
         private GameObject _player;
-        protected PlayerInventory _playerInventory;  // Инвентарь конкретного игрока
+        protected PlayerInventory _playerInventory; 
+        protected DollScore _dollScore;  // Инвентарь конкретного игрока
         
-        private InteractUI _interactionMarker;
+        [SerializeField] private InteractUI _interactionMarker;
         private Animator _animator;
         private SpriteRenderer _sprite;
         protected PlayerInput _playerInput;
@@ -48,18 +50,19 @@ namespace NPC
         {
             if (IsPlayerNearby())
             {
-                //_interactionMarker.Show();
+                _interactionMarker.Show();
                 isAllowedToMove = false;
                 _canInteract = true;
                 
                 if (_player != null && _playerInventory == null)
                 {
                     _playerInventory = _player.GetComponentInChildren<PlayerInventory>();
+                    _dollScore = _player.GetComponentInChildren<DollScore>();
                 }
             }
             else
             {
-             // _interactionMarker.Hide();
+             _interactionMarker.Hide();
                 if (Movable)
                 {
                     isAllowedToMove = true;

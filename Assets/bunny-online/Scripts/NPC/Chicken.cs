@@ -64,7 +64,7 @@ namespace NPC
                 rewardObject.transform.localPosition = new Vector3(2f, 0.5f, 0f);
                 
                 // Начисляем очки
-                DollScore.Instance.AddScore(scoreReward);
+                //DollScore.AddScore(scoreReward);
             }
         }
     }
