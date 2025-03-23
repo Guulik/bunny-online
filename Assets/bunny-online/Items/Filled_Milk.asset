@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b08b13473ca16f4f9c405fc1da2bfe0, type: 3}
+  m_Name: Filled_Milk
+  m_EditorClassIdentifier: 
+  itemName: Milk
+  sprite: {fileID: 282931576, guid: 4ac57ee92b1375d4eb9645ef8992ee6f, type: 3}
+  prefab: {fileID: 1107020359307351026, guid: 3856da5bc4d1e114aadc0492a0881a83, type: 3}
+  isCorrect: 1

@@ -1,7 +1,7 @@
 using GameMode;
 using UnityEngine;
 
-public class KillObjective : Objective
+/*public class KillObjective : Objective
 {
     [SerializeField] private int killTarget;
 
@@ -20,4 +20,4 @@ public class KillObjective : Objective
         if (StatisticManager.Instance.GetPlayerKills(player) >= killTarget)
             CompleteObjective();
     }
-}
+}*/

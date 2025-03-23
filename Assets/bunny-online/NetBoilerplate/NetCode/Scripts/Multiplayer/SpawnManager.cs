@@ -39,6 +39,7 @@ public class SpawnManager : SingletonNetworkBehavior<SpawnManager>
             player.SetDollServerRpc(doll);
             //doll.DollAttack.SetPlayerOwner(player);
             //doll.DollHealth.SetPlayerOwner(player);
+            doll.DollScore.SetPlayerOwner(player);
         }
 
         // Обновляем имя куклы у всех клиентов

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Items;
 using BunnyPlayer;
+using Dolls.Health;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,17 +13,18 @@ namespace NPC
     {
         [SerializeField] private GameObject reward;
         [SerializeField] private Item requiredPass;
+        [SerializeField] private int scoreReward = 10; // Количество очков за передачу
 
         private void OnEnable()
         {
             _playerInput.Player.Interact.started += Interact;
-            TakeItem += PlayerInventory.Inventory.RemoveItem;
+            TakeItem += _playerInventory.RemoveItem;
         }
 
         private void OnDisable()
         {
             _playerInput.Player.Interact.started -= Interact;
-            TakeItem -= PlayerInventory.Inventory.RemoveItem;
+            TakeItem -= _playerInventory.RemoveItem;
         }
 
         public void Interact(InputAction.CallbackContext context)
@@ -42,8 +44,8 @@ namespace NPC
         
         private bool CheckPass()
         {
-                return PlayerInventory.Inventory.ActiveItem == requiredPass 
-                       && PlayerInventory.Inventory.ActiveItem.ToPass().isCorrect;
+                return _playerInventory.ActiveItem == requiredPass 
+                       && _playerInventory.ActiveItem.ToPass().isCorrect;
         }
 
         private void TakeMilk()
@@ -60,6 +62,9 @@ namespace NPC
                 
                 GameObject rewardObject = Instantiate(reward, transform.position, quaternion.identity);
                 rewardObject.transform.localPosition = new Vector3(2f, 0.5f, 0f);
+                
+                // Начисляем очки
+                //DollScore.AddScore(scoreReward);
             }
         }
     }

@@ -59,7 +59,7 @@ public class TabMenu : SingletonNetworkBehavior<TabMenu>
         if (IsServerInitialized) return;
 
         Debug.Log("[CLIENT] TAB-MENU: Initialization started");
-        var stats = statisticManager.GetPlayerStatistics();
+        var stats = statisticManager.GetPlayerScores();
         foreach (var player in stats.Keys.Where(player => !_playerEntries.ContainsKey(player)))
         {
             AddPlayerToTab(player);
@@ -74,8 +74,7 @@ public class TabMenu : SingletonNetworkBehavior<TabMenu>
         var tabEntry = Instantiate(entryPrefab, entriesParent.transform);
 
         tabEntry.SetPlayerName(player.PlayerName);
-        tabEntry.SetKills("0");
-        tabEntry.SetDeaths("0");
+        tabEntry.SetScore("0");
 
         _playerEntries.Add(player, tabEntry);
         ChangeColorBackground(tabEntry);
@@ -115,13 +114,16 @@ public class TabMenu : SingletonNetworkBehavior<TabMenu>
 
     private void SyncStatistics(StatisticChangedEventArgs eventArgs)
     {
+        Debug.Log(eventArgs.Player);
+        Debug.Log(eventArgs.Score);
         if (!_playerEntries.TryGetValue(eventArgs.Player, out var entry))
         {
             AddPlayerToTab(eventArgs.Player);
             return;
         }
+        
+        Debug.Log(entry);
+        entry.SetScore(eventArgs.Score.ToString());
 
-        entry.SetKills(eventArgs.Statistic.Kills.ToString());
-        entry.SetDeaths(eventArgs.Statistic.Deaths.ToString());
     }
 }

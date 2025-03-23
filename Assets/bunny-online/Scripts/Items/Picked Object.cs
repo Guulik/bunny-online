@@ -10,24 +10,26 @@ namespace Items
     { 
         [SerializeField] private Item inventoryItem;
         private PlayerInput _playerInput;
+        
+        private GameObject _player;
+        protected PlayerInventory _playerInventory;  // Инвентарь конкретного игрока
 
         private void Awake()
         {
             _playerInput = new PlayerInput();
             _playerInput.Enable();
-            _player = GameObject.FindGameObjectWithTag("Player");
         }
 
         public Item InventoryItem { get => inventoryItem; set => inventoryItem = value; }
         private void OnEnable()
         {
             _playerInput.Player.Interact.started += Interact;
-            PickItem += PlayerInventory.Inventory.ReceiveItem;
+            
         }
         private void OnDisable()
         {
             _playerInput.Player.Interact.started -= Interact;
-            PickItem -= PlayerInventory.Inventory.ReceiveItem;
+           
         }
     
         private event Action<Item> PickItem;
@@ -39,7 +41,19 @@ namespace Items
 
         private void Update()
         {
-            _canInteract = IsPlayerNearby();
+            if (IsPlayerNearby())
+            {
+                _canInteract = true;
+                
+                if (_player != null && _playerInventory == null)
+                {
+                    _playerInventory = _player.GetComponentInChildren<PlayerInventory>();
+                }
+            }
+            else
+            {
+                _canInteract = false;
+            }
         }
 
         public void Interact(InputAction.CallbackContext context)
@@ -49,8 +63,12 @@ namespace Items
         public void Interact()
         {
             if(!_canInteract) return;
+
+            if (_playerInventory.IsHave(inventoryItem)) return;
             
-            OnItemPicked(inventoryItem);
+            _playerInventory.ReceiveItem(inventoryItem);
+            
+            //OnItemPicked(inventoryItem);
 
             Destroy(gameObject);
         }
@@ -60,8 +78,9 @@ namespace Items
             Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
             foreach (var collider in colliders)
             {
-                if (collider.gameObject == _player)
+                if (collider.CompareTag("Player"))
                 {
+                    _player = collider.gameObject;
                     return true;
                 }
             }
