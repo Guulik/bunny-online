@@ -13,7 +13,7 @@ public class Doll : NetworkBehaviour
 
     [SerializeField] private DollMovement dollMovement;
 
-    
+    public Player PlayerOwner;
     [field: SerializeField] public DollScore DollScore { get; private set; }
 
     public override void OnStartClient()
@@ -35,6 +35,12 @@ public class Doll : NetworkBehaviour
         var mainCamera = Camera.main;
         //dollRendering.SetTargetCamera(mainCamera.transform);
         //spriteBillboard.SetTargetCamera(mainCamera.transform);
+    }
+    
+    public void SetPlayerOwner(Player newOwner)
+    {
+        Debug.Log(newOwner);
+        PlayerOwner = newOwner;
     }
 
     [ObserversRpc]

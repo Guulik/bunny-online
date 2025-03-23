@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 606f04f55f7c656478405b564291c8e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 0}
   inventoryItem: {fileID: 11400000, guid: 60bf2c240ce29e341a7411b7f80298be, type: 2}

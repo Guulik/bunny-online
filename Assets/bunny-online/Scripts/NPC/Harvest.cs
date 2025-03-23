@@ -71,24 +71,19 @@ namespace NPC
             if (!_canInteract || _playerInventory == null) return;
             //if (!IsPlayerHaveAxe()) return;
 
-            Destroy(gameObject);
-            Debug.Log("destroyed");
-            SpawnRewardServerRpc();
             
-            // Уничтожаем объект на сервере
-            ServerManager.Despawn(gameObject);
-        }
-        
-        private void SpawnRewardServerRpc()
-        { 
-            Debug.Log("server RPC is called");
-            
-            Instantiate(_reward, transform.position, Quaternion.identity);
-            _reward.transform.localPosition = new Vector3(2f, 0.5f, 0f);
+            GameObject rewardInstance = Instantiate(_reward, transform.position, Quaternion.identity);
+            //rewardInstance.transform.localPosition = new Vector3(2f, 0.5f, 0f);
             
             // Спавним объект в сети, чтобы он появился на всех клиентах
-            //ServerManager.Spawn(_reward);
+            ServerManager.Spawn(rewardInstance);
             SpawnRewardObserversRpc();
+
+
+            // Уничтожаем объект на сервере
+            ServerManager.Despawn(gameObject);
+            Debug.Log("destroyed");
+            Destroy(gameObject, 0.5f);
         }
 
         [ObserversRpc]

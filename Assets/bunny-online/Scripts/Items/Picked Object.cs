@@ -1,12 +1,16 @@
 using System;
 using NPC;
 using BunnyPlayer;
+using FishNet.Component.Transforming;
+using FishNet.Connection;
+using FishNet.Object;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Items
 {
-    public class PickedObject : Interactable, IInteractable
+    public class PickedObject : NetworkBehaviour, IInteractable
     { 
         [SerializeField] private Item inventoryItem;
         private PlayerInput _playerInput;
@@ -14,6 +18,8 @@ namespace Items
         private GameObject _player;
         protected PlayerInventory _playerInventory;  // Инвентарь конкретного игрок
 
+        [SerializeField] protected float interactRange = 1f;
+        protected bool _canInteract = false;
         
         // Сетевое состояние объекта (будет подбирать его только один игрок)
         private bool _isPicked = false;
@@ -69,11 +75,41 @@ namespace Items
 
             if (_playerInventory.HasItem(inventoryItem)) return;
             
-            _playerInventory.ReceiveItem(inventoryItem);
+            
+            
+            // Вызываем ServerRpc для подбора предмета
+            PickupItemServerRpc(_player);
+            
+            
+            //_playerInventory.ReceiveItem(inventoryItem);
             
             //OnItemPicked(inventoryItem);
 
-            Destroy(gameObject);
+            //Destroy(gameObject);
+        }
+
+
+        [ServerRpc(RequireOwnership = false)]
+        private void PickupItemServerRpc(GameObject doll)
+        {
+            Debug.Log("picking");
+            Debug.Log(doll);
+            // Получаем инвентарь игрока, который подбирает предмет
+            var playerInventory = doll.GetComponentInChildren<PlayerInventory>();
+            Debug.Log(playerInventory);
+            if (playerInventory == null) return;
+
+            // Добавляем предмет в инвентарь игрока
+            playerInventory.ReceiveItem(inventoryItem);
+
+            // Уничтожаем объект на всех клиентах
+            DespawnObjectObserversRpc();
+        }
+        [ObserversRpc]
+        private void DespawnObjectObserversRpc()
+        {
+            _isPicked = true;
+            ServerManager.Despawn(gameObject);
         }
         
         private bool IsPlayerNearby()
