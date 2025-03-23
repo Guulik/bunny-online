@@ -12,8 +12,11 @@ namespace Items
         private PlayerInput _playerInput;
         
         private GameObject _player;
-        protected PlayerInventory _playerInventory;  // Инвентарь конкретного игрока
+        protected PlayerInventory _playerInventory;  // Инвентарь конкретного игрок
 
+        
+        // Сетевое состояние объекта (будет подбирать его только один игрок)
+        private bool _isPicked = false;
         private void Awake()
         {
             _playerInput = new PlayerInput();
@@ -64,7 +67,7 @@ namespace Items
         {
             if(!_canInteract) return;
 
-            if (_playerInventory.IsHave(inventoryItem)) return;
+            if (_playerInventory.HasItem(inventoryItem)) return;
             
             _playerInventory.ReceiveItem(inventoryItem);
             

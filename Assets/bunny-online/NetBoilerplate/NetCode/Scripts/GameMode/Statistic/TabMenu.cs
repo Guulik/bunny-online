@@ -114,15 +114,13 @@ public class TabMenu : SingletonNetworkBehavior<TabMenu>
 
     private void SyncStatistics(StatisticChangedEventArgs eventArgs)
     {
-        Debug.Log(eventArgs.Player);
-        Debug.Log(eventArgs.Score);
+
         if (!_playerEntries.TryGetValue(eventArgs.Player, out var entry))
         {
             AddPlayerToTab(eventArgs.Player);
             return;
         }
-        
-        Debug.Log(entry);
+
         entry.SetScore(eventArgs.Score.ToString());
 
     }

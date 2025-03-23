@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using Items;
 using BunnyPlayer;
+using FishNet.Object;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace NPC
 {
-    public class Harvest : Interactable, IInteractable
+    public class Harvest : NetworkBehaviour, IInteractable
     {
         private InteractUI _interactionMarker;
         [SerializeField] private Item _playerAxe;
@@ -15,9 +16,11 @@ namespace NPC
         private PlayerInput _playerInput;
 
         private GameObject _player;
-        protected PlayerInventory _playerInventory;  // Инвентарь конкретного игрока
+        protected PlayerInventory _playerInventory; // Инвентарь конкретного игрока
         
-        
+        [SerializeField] protected float interactRange = 1f;
+        protected bool _canInteract = false;
+
         private void Awake()
         {
             _interactionMarker = GetComponentInChildren<InteractUI>();
@@ -41,7 +44,7 @@ namespace NPC
             {
                 _interactionMarker.Show();
                 _canInteract = true;
-                
+
                 if (_player != null && _playerInventory == null)
                 {
                     _playerInventory = _player.GetComponentInChildren<PlayerInventory>();
@@ -56,25 +59,47 @@ namespace NPC
 
         public void Interact(InputAction.CallbackContext context)
         {
-            Interact();
+            //if (!IsOwner) return; // Только локальный игрок может инициировать
+            //Interact();
+            InteractServerRpc();
+        }
+        
+        
+        [ServerRpc(RequireOwnership = false)]
+        private void InteractServerRpc()
+        {
+            if (!_canInteract || _playerInventory == null) return;
+            //if (!IsPlayerHaveAxe()) return;
+
+            Destroy(gameObject);
+            SpawnRewardServerRpc();
+        }
+        
+        //[ServerRpc(RequireOwnership = false)]
+        private void SpawnRewardServerRpc()
+        { 
+            Instantiate(_reward, transform.position, Quaternion.identity);
+            _reward.transform.localPosition = new Vector3(2f, 0.5f, 0f);
+            SpawnRewardObserversRpc();
         }
 
-        public void Interact()
+        [ObserversRpc]
+        private void SpawnRewardObserversRpc()
+        {
+            Debug.Log("[CLIENT] Ресурс собран и предмет создан.");
+        }
+        
+        /*public void Interact()
         {
             if (!_canInteract) return;
 
-            if (IsPlayerHaveAxe())
-            {
-                Destroy(gameObject, 0.5f);
 
-                Instantiate(_reward, transform.position, Quaternion.identity);
-                _reward.transform.localPosition = new Vector3(2f, 0.5f, 0f);
-            }
-            else
-            {
-                _playerInventory.ShowChatBubble("Нужен топорик"); // не лучшее решение...
-            }
-        }
+            Destroy(gameObject, 0.5f);
+
+            Instantiate(_reward, transform.position, Quaternion.identity);
+            _reward.transform.localPosition = new Vector3(2f, 0.5f, 0f);
+            
+        }*/
 
         private bool IsPlayerHaveAxe()
         {
@@ -92,6 +117,7 @@ namespace NPC
                     return true;
                 }
             }
+
             return false;
         }
     }

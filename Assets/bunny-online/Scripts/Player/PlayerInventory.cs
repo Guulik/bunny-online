@@ -44,7 +44,7 @@ namespace BunnyPlayer
             _playerInput.Player.DropItem.started -= DropItem;
         }
 
-        public bool IsHave(Item item)
+        public bool HasItem(Item item)
         {
             return Items.Exists(i => i == item);
         }
@@ -120,17 +120,6 @@ namespace BunnyPlayer
         private bool IsInventoryEmpty()
         {
             return Items.Count == 0;
-        }
-        
-        
-        public void ShowChatBubble(string text) //not SOLID but pohui. I just want to complete this subject as soon as i can
-        {
-            if (ChatBubbleHandler.BubbleInstance)
-            {
-                ChatBubbleHandler.BubbleInstance.OnShowUp(gameObject.transform, text);
-            }
-            else
-                Debug.Log("Bubble НЕ существует");
         }
     }
 }
