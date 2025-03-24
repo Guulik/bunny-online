@@ -43,8 +43,8 @@ namespace NPC
 
         private void ChangeMilk()
         {
-            _playerInventory.RemoveItem(food);
-            _playerInventory.ReceiveItem(filledMilk);
+            _playerInventory.RemoveItemServerRpc(food.ID);;
+            _playerInventory.ReceiveItemServerRpc(filledMilk.ID);
             //OnTakeItem(emptyMilk);
             //OnGiveItem(filledMilk);
         }

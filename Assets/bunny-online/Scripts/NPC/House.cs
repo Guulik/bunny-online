@@ -68,7 +68,7 @@ namespace NPC
 
         private void TakeRequiredItem(Item item)
         {
-            _playerInventory.RemoveItem(item);
+            _playerInventory.RemoveItemServerRpc(item.ID);
         }
         private void GiveScore(int score)
         {

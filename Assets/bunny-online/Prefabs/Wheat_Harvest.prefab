@@ -98,6 +98,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -145,9 +148,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3fbf69d8514dc1993c3f2536b40488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactRange: 1
-  _playerAxe: {fileID: 11400000, guid: c9c6b400f25a2234d800caa7cfec7c33, type: 2}
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 0}
+  _networkObjectCache: {fileID: 0}
+  _playerAxe: {fileID: 0}
   _reward: {fileID: 8560856219521164813, guid: d542b1d71ec633544958e0efd0ddb131, type: 3}
+  interactRange: 1
 --- !u!58 &4515256269004897134
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -156,6 +162,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4230378642767869773}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -179,9 +186,9 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
   m_Radius: 0.46875
 --- !u!1 &7429181136513741726
 GameObject:
@@ -232,6 +239,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

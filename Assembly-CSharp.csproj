@@ -47,6 +47,7 @@
     <Analyzer Include="Q:\UnityProjects(new)\bunny-online\Assets\External Assets\FishNet\Runtime\Plugins\CodeAnalysis\FishNet.CodeAnalysis.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\bunny-online\Scripts\Items\ItemManager.cs" />
     <Compile Include="Assets\bunny-online\Scripts\NPC\Cow.cs" />
     <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Scripts\GameMode\Statistic\StatisticManager.cs" />
     <Compile Include="Assets\bunny-online\NetBoilerplate\NetCode\Scripts\SceneManagerService.cs" />
