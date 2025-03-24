@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
+using FishNet.Object;
+using FishNet.Serializing;
 using Items;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace BunnyPlayer
 {
-    public class PlayerInventory : MonoBehaviour
+    public class PlayerInventory : NetworkBehaviour
     {
         private PlayerInput _playerInput;
 
@@ -23,9 +25,25 @@ namespace BunnyPlayer
         }
 
         public Item ActiveItem { get; set; }
+        
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+            if (!IsOwner)
+            {
+                // Отключаем управление инвентарем для других игроков
+                enabled = false;
+            }
+        }
 
         private void Awake()
         {
+            // Где-то при старте игры (например, в Awake менеджера предметов)
+            foreach (Item item in Resources.LoadAll<Item>("Items"))
+            {
+                ItemManager.RegisterItem(item);
+            }
+
             Items = new List<Item>();
             _handledItemSprite = handledItem.GetComponent<SpriteRenderer>();
             _playerInput = new PlayerInput();
@@ -35,19 +53,128 @@ namespace BunnyPlayer
         private void OnEnable()
         {
             _playerInput.Player.ChangeItem.started += ChangeActiveItem;
-            _playerInput.Player.DropItem.started += DropItem;
+           // _playerInput.Player.DropItem.started += DropItem;
         }
 
         private void OnDisable()
         {
             _playerInput.Player.ChangeItem.started -= ChangeActiveItem;
-            _playerInput.Player.DropItem.started -= DropItem;
+            //_playerInput.Player.DropItem.started -= DropItem;
         }
 
         public bool HasItem(Item item)
         {
             return Items.Exists(i => i == item);
         }
+        [ServerRpc(RequireOwnership = false)]
+        public void ReceiveItemServerRpc(int itemID)
+        {
+            // На сервере получаем предмет по ID
+            Item item = ItemManager.GetItemByID(itemID);
+            if (item == null) return;
+
+            // Добавляем предмет на сервере
+            var existingItem = Items.FirstOrDefault(i => i.ID == itemID);
+            if (existingItem != null)
+            {
+                existingItem.count++;
+            }
+            else
+            {
+                Item newItem = Instantiate(item); // Создаем копию ScriptableObject
+                newItem.count = 1;
+                Items.Add(newItem);
+            }
+
+            // Синхронизируем изменения
+            SyncInventoryClientRpc(itemID);
+        }
+
+        [ObserversRpc]
+        private void SyncInventoryClientRpc(int itemID)
+        {
+            // На клиенте получаем предмет по ID
+            Item item = ItemManager.GetItemByID(itemID);
+            if (item == null) return;
+
+            var existingItem = Items.FirstOrDefault(i => i.ID == itemID);
+            if (existingItem != null)
+            {
+                existingItem.count++;
+            }
+            else
+            {
+                Item newItem = Instantiate(item);
+                newItem.count = 1;
+                Items.Add(newItem);
+            }
+
+            if (ActiveItem == null)
+            {
+                SetActiveItem(Items[0]);
+            }
+        }
+        
+        [ServerRpc(RequireOwnership = false)]
+        public void RemoveItemServerRpc(int itemID)
+        {
+            var item = Items.FirstOrDefault(i => i.ID == itemID);
+            if (item != null)
+            {
+                Items.Remove(item);
+                if (ActiveItem != null && ActiveItem.ID == itemID)
+                {
+                    SetActiveItem(Items.Count > 0 ? Items[0] : null);
+                }
+            }
+    
+            SyncRemoveItemClientRpc(itemID);
+        }
+
+        [ObserversRpc]
+        private void SyncRemoveItemClientRpc(int itemID)
+        {
+            var item = Items.FirstOrDefault(i => i.ID == itemID);
+            if (item != null)
+            {
+                Items.Remove(item);
+                if (ActiveItem != null && ActiveItem.ID == itemID)
+                {
+                    SetActiveItem(Items.Count > 0 ? Items[0] : null);
+                }
+            }
+        }
+       
+        private void SetActiveItem(Item newActiveItem)
+        {
+            if (!IsOwner) return;
+
+            ActiveItem = newActiveItem;
+            _handledItemSprite.sprite = ActiveItem?.sprite;
+    
+            if (IsServer)
+            {
+                SetActiveItemServerRpc(newActiveItem?.ID ?? -1);
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SetActiveItemServerRpc(int itemID)
+        {
+            Item item = itemID == -1 ? null : ItemManager.GetItemByID(itemID);
+            ActiveItem = item;
+            SyncActiveItemClientRpc(itemID);
+        }
+
+        [ObserversRpc]
+        private void SyncActiveItemClientRpc(int itemID)
+        {
+            ActiveItem = itemID == -1 ? null : ItemManager.GetItemByID(itemID);
+            _handledItemSprite.sprite = ActiveItem?.sprite;
+        }
+        
+        
+        /*
         public void ReceiveItem(Item item)
         {
             Debug.Log("Recieved:" + item);
@@ -96,6 +223,7 @@ namespace BunnyPlayer
             ActiveItem = newActiveItem;
             _handledItemSprite.sprite = ActiveItem.sprite;
         }
+        */
 
         private void ChangeActiveItem(InputAction.CallbackContext context)
         {
@@ -109,13 +237,13 @@ namespace BunnyPlayer
             SetActiveItem(newActiveItem);
         }
 
-        private void DropItem(InputAction.CallbackContext context)
+        /*private void DropItem(InputAction.CallbackContext context)
         {
             if (IsInventoryEmpty()) return;
 
             Instantiate(ActiveItem.prefab, transform.position + new Vector3(0.5f, -0.5f, 0f), Quaternion.identity);
             RemoveItem(ActiveItem);
-        }
+        }*/
 
         private bool IsInventoryEmpty()
         {

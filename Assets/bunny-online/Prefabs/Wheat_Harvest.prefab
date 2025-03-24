@@ -151,7 +151,7 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 0}
-  _playerAxe: {fileID: 11400000, guid: c9c6b400f25a2234d800caa7cfec7c33, type: 2}
+  _playerAxe: {fileID: 0}
   _reward: {fileID: 8560856219521164813, guid: d542b1d71ec633544958e0efd0ddb131, type: 3}
   interactRange: 1
 --- !u!58 &4515256269004897134

@@ -140,5 +140,5 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 0}
-  inventoryItem: {fileID: 11400000, guid: 60bf2c240ce29e341a7411b7f80298be, type: 2}
+  inventoryItem: {fileID: 0}
   interactRange: 1

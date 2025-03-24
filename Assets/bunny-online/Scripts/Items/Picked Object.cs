@@ -100,7 +100,7 @@ namespace Items
             if (playerInventory == null) return;
 
             // Добавляем предмет в инвентарь игрока
-            playerInventory.ReceiveItem(inventoryItem);
+            playerInventory.ReceiveItemServerRpc(inventoryItem.ID);
 
             // Уничтожаем объект на всех клиентах
             DespawnObjectObserversRpc();

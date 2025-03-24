@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d247747d94bce946b79a916bfe1a5b4, type: 3}
   m_Name: Egg
   m_EditorClassIdentifier: 
+  ID: 2
   itemName: Egg
   sprite: {fileID: 21300000, guid: b21071df5aad3b7478a45256a9dfca97, type: 3}
   prefab: {fileID: 5664602087233647403, guid: 934311b281c94bb46807da72f7c5184e, type: 3}

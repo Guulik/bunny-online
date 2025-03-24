@@ -104,7 +104,7 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 0}
-  inventoryItem: {fileID: 11400000, guid: 8a76858b6d3c960498c9a87eb3faf9fe, type: 2}
+  inventoryItem: {fileID: 0}
   interactRange: 1
 --- !u!58 &-3185818292189810517
 CircleCollider2D:
