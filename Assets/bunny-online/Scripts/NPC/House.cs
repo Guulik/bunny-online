@@ -58,12 +58,12 @@ namespace NPC
 
         private bool CheckMilk()
         {
-            return _playerInventory.ActiveItem == richItem;
+            return _playerInventory.ActiveItem.ID == richItem.ID;
         }
         
         private bool CheckBerry()
         {
-            return _playerInventory.ActiveItem == commonItem;
+            return _playerInventory.ActiveItem.ID == commonItem.ID;
         }
 
         private void TakeRequiredItem(Item item)
