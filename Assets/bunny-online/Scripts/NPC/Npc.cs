@@ -74,8 +74,8 @@ namespace NPC
 
         private void Update()
         {
-            _nearbyPlayer = GetNearbyPlayer();
-           UpdatePlayerComponents();
+            //_nearbyPlayer = GetNearbyPlayer();
+           //UpdatePlayerComponents();
             _canInteract = _nearbyPlayer != null;
 
             if (_canInteract)

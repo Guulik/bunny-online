@@ -3,7 +3,9 @@ using System.Linq;
 using Items;
 using BunnyPlayer;
 using Dolls.Health;
+using FishNet.Object;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -18,6 +20,7 @@ namespace NPC
         [SerializeField] private Item commonItem;
         [SerializeField] private int commonReward = 1;
 
+        private PlayerInventory _inventory;
         private void Awake()
         {
             _playerInput = new PlayerInput();
@@ -32,6 +35,19 @@ namespace NPC
         private void OnDisable()
         {
             _playerInput.Player.Interact.started -= Interact;
+        }
+
+        public void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                var doll = other.GetComponentInChildren<Doll>();
+                Debug.Log(doll);
+                if (doll.gameObject.GetComponentInChildren<NetworkObject>().IsOwner)
+                {
+                    _inventory = doll.GetComponentInChildren<PlayerInventory>();
+                };
+            }
         }
 
         public void Interact(InputAction.CallbackContext context)
@@ -58,19 +74,19 @@ namespace NPC
 
         private bool CheckMilk()
         {
-            return _playerInventory.ActiveItem.ID == richItem.ID;
+            return _inventory.ActiveItem.ID == richItem.ID;
         }
         
         private bool CheckBerry()
         {
-            return _playerInventory.ActiveItem.ID == commonItem.ID;
+            return _inventory.ActiveItem.ID == commonItem.ID;
         }
 
         private void TakeRequiredItem(Item item)
         {
             Debug.Log(_nearbyPlayer);
-            Debug.Log(_playerInventory.ActiveItem);
-            _playerInventory.RemoveItemServerRpc(item.ID);
+            Debug.Log(_inventory.ActiveItem);
+            _inventory.RemoveItemServerRpc(item.ID);
         }
         private void GiveScore(int score)
         {
