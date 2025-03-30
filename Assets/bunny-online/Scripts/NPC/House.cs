@@ -12,7 +12,7 @@ using UnityEngine.Serialization;
 
 namespace NPC
 {
-    public class House : Npc, IInteractable
+    public class House : NetworkBehaviour, IInteractable
     {
         //[SerializeField] private GameObject reward;
         [SerializeField] private Item richItem;
@@ -20,9 +20,21 @@ namespace NPC
         [SerializeField] private Item commonItem;
         [SerializeField] private int commonReward = 1;
 
+        private Rigidbody2D _rb2d;
+        
         private PlayerInventory _inventory;
+        protected DollScore _dollScore;
+        protected PlayerInput _playerInput;
+        
+        protected bool _canInteract = false;
+        
+        
+        [SerializeField] protected InteractUI _interactionMarker;
         private void Awake()
         {
+            _rb2d = GetComponent<Rigidbody2D>();
+            _rb2d.gravityScale = 0f;
+            
             _playerInput = new PlayerInput();
             _playerInput.Enable();
         }
@@ -41,13 +53,22 @@ namespace NPC
         {
             if (other.CompareTag("Player"))
             {
+                _canInteract = true;
+                _interactionMarker.Show();
+                
                 var doll = other.GetComponentInChildren<Doll>();
                 Debug.Log(doll);
-                if (doll.gameObject.GetComponentInChildren<NetworkObject>().IsOwner)
-                {
-                    _inventory = doll.GetComponentInChildren<PlayerInventory>();
-                };
+                
+                _inventory = doll.gameObject.GetComponentInChildren<PlayerInventory>();
+                _dollScore = doll.gameObject.GetComponentInChildren<DollScore>();
+                Debug.Log(_inventory);
             }
+        }
+
+        public void OnTriggerExit2D(Collider2D other)
+        {
+                _interactionMarker.Hide();
+                _canInteract = false;
         }
 
         public void Interact(InputAction.CallbackContext context)
@@ -59,6 +80,7 @@ namespace NPC
         {
             if (!_canInteract) return;
 
+            Debug.Log("interacting");
             if (CheckMilk())
             {
                 TakeRequiredItem(richItem);
@@ -84,7 +106,6 @@ namespace NPC
 
         private void TakeRequiredItem(Item item)
         {
-            Debug.Log(_nearbyPlayer);
             Debug.Log(_inventory.ActiveItem);
             _inventory.RemoveItemServerRpc(item.ID);
         }

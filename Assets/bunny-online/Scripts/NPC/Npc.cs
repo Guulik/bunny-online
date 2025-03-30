@@ -31,7 +31,7 @@ namespace NPC
         protected PlayerInventory _playerInventory; 
         protected DollScore _dollScore;  // Инвентарь конкретного игрока
         
-        [SerializeField] private InteractUI _interactionMarker;
+        [SerializeField] protected InteractUI _interactionMarker;
         private Animator _animator;
         private SpriteRenderer _sprite;
         protected PlayerInput _playerInput;
@@ -76,7 +76,7 @@ namespace NPC
         {
             //_nearbyPlayer = GetNearbyPlayer();
            //UpdatePlayerComponents();
-            _canInteract = _nearbyPlayer != null;
+            //_canInteract = _nearbyPlayer != null;
 
             if (_canInteract)
             {
