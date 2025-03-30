@@ -3,7 +3,9 @@ using System.Collections;
 using System.Linq;
 using BunnyPlayer;
 using Dolls.Health;
+using FishNet.Object;
 using Items;
+using Steamworks;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -11,7 +13,7 @@ using Random = UnityEngine.Random;
 
 namespace NPC
 {
-    public class Npc : Interactable
+    public class Npc : NetworkBehaviour
     { 
         [SerializeField]protected bool Movable = false;
         protected bool isAllowedToMove = false;
@@ -25,6 +27,7 @@ namespace NPC
         private Rigidbody2D _rb2d;
         
         private GameObject _player;
+        protected Player _nearbyPlayer;
         protected PlayerInventory _playerInventory; 
         protected DollScore _dollScore;  // Инвентарь конкретного игрока
         
@@ -32,6 +35,10 @@ namespace NPC
         private Animator _animator;
         private SpriteRenderer _sprite;
         protected PlayerInput _playerInput;
+        
+            
+        [SerializeField] protected float interactRange = 1f;
+        protected bool _canInteract = false;
         
 
         private void Awake()
@@ -46,35 +53,62 @@ namespace NPC
         }
         
 
+        private Player GetNearbyPlayer()
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, interactRange);
+            foreach (var collider in colliders)
+            {
+                if (collider.CompareTag("Player"))
+                {
+                    // Ищем Doll в родителях (если коллайдер на дочернем объекте)
+                    var doll = collider.GetComponentInParent<Doll>();
+                    Debug.Log("doll");
+                    if (doll != null && doll.PlayerOwner != null)
+                    {
+                        return doll.PlayerOwner;
+                    }
+                }
+            }
+            return null;
+        }
+
         private void Update()
         {
-            if (IsPlayerNearby())
+            _nearbyPlayer = GetNearbyPlayer();
+           UpdatePlayerComponents();
+            _canInteract = _nearbyPlayer != null;
+
+            if (_canInteract)
             {
                 _interactionMarker.Show();
                 isAllowedToMove = false;
-                _canInteract = true;
-                
-                if (_player != null && _playerInventory == null)
-                {
-                    _playerInventory = _player.GetComponentInChildren<PlayerInventory>();
-                    _dollScore = _player.GetComponentInChildren<DollScore>();
-                }
             }
             else
             {
-             _interactionMarker.Hide();
-                if (Movable)
-                {
-                    isAllowedToMove = true;
-                }
-                _canInteract = false;
+                _interactionMarker.Hide();
+                isAllowedToMove = Movable;
             }
 
-            
             if (isAllowedToMove)
-                _coroutine ??= StartCoroutine(Move());
+            {
+                StartCoroutine(Move());
+            }
         }
-
+        private void UpdatePlayerComponents()
+        {
+            if (_nearbyPlayer != null && _nearbyPlayer.Doll != null)
+            {
+                _playerInventory = _nearbyPlayer.Doll.GetComponentInChildren<PlayerInventory>();
+                _dollScore = _nearbyPlayer.Doll.GetComponentInChildren<DollScore>();
+            
+                if (_playerInventory == null)
+                {
+                    Debug.LogWarning($"PlayerInventory not found on Doll for player {_nearbyPlayer.PlayerName}");
+                }
+            }
+        }
+        
+        
         #region Moving
 
         private void SetVelocity(Vector2 circleRadius)

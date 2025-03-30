@@ -6769,12 +6769,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37036797a5d101647873a186554eab02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactRange: 1
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 897148517}
+  _networkObjectCache: {fileID: 0}
   Movable: 1
   moveSpeed: 1
   movingTime: 1
   stopTime: 1
   _interactionMarker: {fileID: 1031397608}
+  interactRange: 1
   filledMilk: {fileID: 11400000, guid: 60bf2c240ce29e341a7411b7f80298be, type: 2}
   food: {fileID: 11400000, guid: d882b6ad14851c54db88ecc981bff85c, type: 2}
 --- !u!58 &502056832
@@ -7540,6 +7543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 897148516}
+  - component: {fileID: 897148517}
   m_Layer: 0
   m_Name: Characters
   m_TagString: Untagged
@@ -7564,6 +7568,57 @@ Transform:
   - {fileID: 502056829}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &897148517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897148515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IsNested>k__BackingField: 0
+  <ComponentIndex>k__BackingField: 0
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  <PredictedOwner>k__BackingField: {fileID: 0}
+  NetworkBehaviours: []
+  InitializedParentNetworkBehaviour: {fileID: 0}
+  InitializedNestedNetworkObjects: []
+  RuntimeParentNetworkBehaviour: {fileID: 0}
+  RuntimeChildNetworkBehaviours: []
+  _isNetworked: 1
+  _isSpawnable: 1
+  _isGlobal: 0
+  _initializeOrder: 0
+  _preventDespawnOnDisconnect: 0
+  _defaultDespawnType: 0
+  _initializedValusSet: 0
+  NetworkObserver: {fileID: 0}
+  _enablePrediction: 0
+  _predictionType: 0
+  _graphicalObject: {fileID: 0}
+  _detachGraphicalObject: 0
+  _enableStateForwarding: 1
+  _networkTransform: {fileID: 0}
+  _ownerInterpolation: 1
+  _ownerSmoothedProperties: 255
+  _adaptiveInterpolation: 3
+  _spectatorSmoothedProperties: 255
+  _spectatorInterpolation: 2
+  _enableTeleport: 0
+  _teleportThreshold: 1
+  <PrefabId>k__BackingField: 65535
+  <SpawnableCollectionId>k__BackingField: 0
+  <AssetPathHash>k__BackingField: 0
+  <SceneId>k__BackingField: 2078015487
+  SerializedTransformProperties:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 0}
+    Scale: {x: 0, y: 0, z: 0}
+    IsValid: 0
 --- !u!1001 &908496048
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8253,24 +8308,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9af9b26559328a449ad0eb49133e64b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactRange: 1
-  _canInteract: 0
-  Movable: 0
-  isAllowedToMove: 0
-  moveSpeed: 0
-  movingTime: 1
-  stopTime: 1
-  circleRadius: {x: 0, y: 0}
-  _rb2d: {fileID: 0}
-  _player: {fileID: 0}
-  _playerInventory: {fileID: 0}
-  _dollScore: {fileID: 0}
-  _interactionMarker: {fileID: 0}
-  _animator: {fileID: 0}
-  _sprite: {fileID: 0}
-  reward: {fileID: 0}
-  requiredPass: {fileID: 0}
-  scoreReward: 10
 --- !u!58 &1265133164
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -26181,9 +26218,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1719633054}
     m_Modifications:
+    - target: {fileID: -8414252909242699238, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: _isSpawnable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8414252909242699238, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: <SceneId>k__BackingField
+      value: 4160487423
+      objectReference: {fileID: 0}
     - target: {fileID: 1675258470250896403, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
       propertyPath: m_Name
       value: Free_Chicken_House
+      objectReference: {fileID: 0}
+    - target: {fileID: 1675258470250896403, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5078536414784768972, guid: 25b3cc53d050f0d438c42eb759ef024d, type: 3}
       propertyPath: m_LocalPosition.x

@@ -23,8 +23,23 @@ namespace BunnyPlayer
             get => items;
             set => items = value;
         }
-
-        public Item ActiveItem { get; set; }
+        
+        private Item _activeItem;
+        public Item ActiveItem 
+        {
+            get => _activeItem;
+            set
+            {
+                _activeItem = value;
+                _handledItemSprite.sprite = _activeItem?.sprite;
+        
+                if (IsOwner)
+                {
+                    // Отправляем ID активного предмета на сервер
+                    SetActiveItemServerRpc(_activeItem?.ID ?? -1);
+                }
+            }
+        }
         
         public override void OnStartClient()
         {
@@ -158,21 +173,23 @@ namespace BunnyPlayer
             }
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        private void SetActiveItemServerRpc(int itemID)
+        [ServerRpc]
+        private void SetActiveItemServerRpc(int itemId)
         {
-            Item item = itemID == -1 ? null : ItemManager.GetItemByID(itemID);
-            ActiveItem = item;
-            SyncActiveItemClientRpc(itemID);
+            Item item = itemId == -1 ? null : ItemManager.GetItemByID(itemId);
+            _activeItem = item;
+    
+            // Рассылаем всем клиентам
+            SyncActiveItemClientRpc(itemId);
         }
-
         [ObserversRpc]
-        private void SyncActiveItemClientRpc(int itemID)
+        private void SyncActiveItemClientRpc(int itemId)
         {
-            ActiveItem = itemID == -1 ? null : ItemManager.GetItemByID(itemID);
-            _handledItemSprite.sprite = ActiveItem?.sprite;
+            if (IsOwner) return;
+    
+            _activeItem = itemId == -1 ? null : ItemManager.GetItemByID(itemId);
+            _handledItemSprite.sprite = _activeItem?.sprite;
         }
-        
         
         /*
         public void ReceiveItem(Item item)

@@ -68,6 +68,8 @@ namespace NPC
 
         private void TakeRequiredItem(Item item)
         {
+            Debug.Log(_nearbyPlayer);
+            Debug.Log(_playerInventory.ActiveItem);
             _playerInventory.RemoveItemServerRpc(item.ID);
         }
         private void GiveScore(int score)
