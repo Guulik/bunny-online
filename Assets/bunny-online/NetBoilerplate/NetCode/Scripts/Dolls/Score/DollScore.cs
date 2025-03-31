@@ -25,5 +25,10 @@ namespace Dolls.Health
             Debug.Log(newOwner);
             _playerOwner = newOwner;
         }
+
+        public Player GetPlayerOwner()
+        {
+            return _playerOwner;
+        }
     }
 }

@@ -57,11 +57,13 @@ namespace NPC
                 _interactionMarker.Show();
                 
                 var doll = other.GetComponentInChildren<Doll>();
-                Debug.Log(doll);
+                Debug.Log("houdse doll detected: "  + doll);
                 
                 _inventory = doll.gameObject.GetComponentInChildren<PlayerInventory>();
                 _dollScore = doll.gameObject.GetComponentInChildren<DollScore>();
                 Debug.Log(_inventory);
+                Debug.Log("houdse dollScore detected: " + _dollScore);
+                Debug.Log("houdse doll Owner detected: "+ _dollScore.GetPlayerOwner().PlayerName);
             }
         }
 
