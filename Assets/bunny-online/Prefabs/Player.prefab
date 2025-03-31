@@ -99,9 +99,7 @@ GameObject:
   - component: {fileID: 5234365473200000811}
   - component: {fileID: 687770611268297188}
   - component: {fileID: 8271415275167399867}
-  - component: {fileID: 2365239591408175007}
   - component: {fileID: 5450774037305265843}
-  - component: {fileID: 4344969542859827502}
   - component: {fileID: 3574455843244925232}
   - component: {fileID: 9171133904278334808}
   m_Layer: 0
@@ -246,19 +244,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &2365239591408175007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1333124592196462613}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b18361b2f9ae384796aa49b16ff4845, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 4
 --- !u!114 &5450774037305265843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,23 +256,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c373974f95c57964f88f5222194a0a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 9171133904278334808}
+  _networkObjectCache: {fileID: 0}
   handledItem: {fileID: 145100249116704431}
   items: []
---- !u!114 &4344969542859827502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1333124592196462613}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab541fd6b49f8f8449a9e4b8d6613e01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 9171133904278334808}
-  _networkObjectCache: {fileID: 9171133904278334808}
+  _activeItem: {fileID: 0}
 --- !u!95 &3574455843244925232
 Animator:
   serializedVersion: 7
@@ -327,7 +301,7 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   <PredictedOwner>k__BackingField: {fileID: 0}
   NetworkBehaviours:
-  - {fileID: 4344969542859827502}
+  - {fileID: 0}
   InitializedParentNetworkBehaviour: {fileID: 0}
   InitializedNestedNetworkObjects: []
   RuntimeParentNetworkBehaviour: {fileID: 0}
@@ -335,7 +309,7 @@ MonoBehaviour:
   _isNetworked: 1
   _isSpawnable: 1
   _isGlobal: 0
-  _initializeOrder: 0
+  _initializeOrder: 2
   _preventDespawnOnDisconnect: 0
   _defaultDespawnType: 0
   _initializedValusSet: 1
