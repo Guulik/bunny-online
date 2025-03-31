@@ -67,6 +67,7 @@ namespace Items
 
         public void Interact(InputAction.CallbackContext context)
         {
+            if (!IsOwner) return;
             Interact();
         }
         public void Interact()

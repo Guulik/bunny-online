@@ -59,8 +59,7 @@ namespace NPC
 
         public void Interact(InputAction.CallbackContext context)
         {
-            //if (!IsOwner) return; // Только локальный игрок может инициировать
-            //Interact();
+            if (!IsOwner) return;
             InteractServerRpc();
         }
         

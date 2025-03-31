@@ -57,6 +57,7 @@ namespace NPC
 
         public void Interact(InputAction.CallbackContext context)
         {
+            if (!IsOwner) return;
             UpdatePlayerComponents();
             
             if (!_canInteract) return;

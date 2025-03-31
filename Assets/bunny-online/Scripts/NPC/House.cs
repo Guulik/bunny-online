@@ -75,6 +75,7 @@ namespace NPC
 
         public void Interact(InputAction.CallbackContext context)
         {
+            if (!IsOwner) return;
             Interact();
         }
 
