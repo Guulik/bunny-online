@@ -1,4 +1,6 @@
-﻿using Dolls.Health;
+﻿using BunnyPlayer;
+using Cysharp.Threading.Tasks.Triggers;
+using Dolls.Health;
 using FishNet;
 using FishNet.Object;
 using UnityEngine;
@@ -41,7 +43,8 @@ public class SpawnManager : SingletonNetworkBehavior<SpawnManager>
             //doll.DollHealth.SetPlayerOwner(player);
             doll.DollScore.SetPlayerOwner(player);
             doll.SetPlayerOwner(player);
-            
+            var playerInventory = doll.GetComponentInChildren<PlayerInventory>().gameObject;
+            playerInventory.SetActive(true);
         }
 
         // Обновляем имя куклы у всех клиентов
