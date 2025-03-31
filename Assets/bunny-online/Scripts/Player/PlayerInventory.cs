@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using FishNet.Serializing;
 using Items;
 using UnityEngine;
@@ -18,13 +20,15 @@ namespace BunnyPlayer
 
         [SerializeField] private List<Item> items = new List<Item>();
 
+        public readonly SyncVar<int> ActiveItemIndex = new();
+        
         private List<Item> Items
         {
             get => items;
             set => items = value;
         }
         
-        private Item _activeItem;
+        public Item _activeItem;
         public Item ActiveItem 
         {
             get => _activeItem;
@@ -32,12 +36,6 @@ namespace BunnyPlayer
             {
                 _activeItem = value;
                 _handledItemSprite.sprite = _activeItem?.sprite;
-        
-                if (IsOwner)
-                {
-                    // Отправляем ID активного предмета на сервер
-                    SetActiveItemServerRpc(_activeItem?.ID ?? -1);
-                }
             }
         }
         
@@ -53,12 +51,12 @@ namespace BunnyPlayer
 
         private void Awake()
         {
-            // Где-то при старте игры (например, в Awake менеджера предметов)
             foreach (Item item in Resources.LoadAll<Item>("Items"))
             {
                 ItemManager.RegisterItem(item);
             }
 
+            ActiveItemIndex.Value = 0;
             Items = new List<Item>();
             _handledItemSprite = handledItem.GetComponent<SpriteRenderer>();
             _playerInput = new PlayerInput();
@@ -76,7 +74,7 @@ namespace BunnyPlayer
             _playerInput.Player.ChangeItem.started -= ChangeActiveItem;
             //_playerInput.Player.DropItem.started -= DropItem;
         }
-
+        
         public bool HasItem(Item item)
         {
             return Items.Exists(i => i == item);
@@ -87,6 +85,7 @@ namespace BunnyPlayer
             // На сервере получаем предмет по ID
             Item item = ItemManager.GetItemByID(itemID);
             if (item == null) return;
+            Debug.Log(item);
 
             // Добавляем предмет на сервере
             var existingItem = Items.FirstOrDefault(i => i.ID == itemID);
@@ -163,14 +162,12 @@ namespace BunnyPlayer
         private void SetActiveItem(Item newActiveItem)
         {
             if (!IsOwner) return;
-
+            Debug.Log("new active item  = " + newActiveItem);
             ActiveItem = newActiveItem;
             _handledItemSprite.sprite = ActiveItem?.sprite;
-    
-            if (IsServer)
-            {
-                SetActiveItemServerRpc(newActiveItem?.ID ?? -1);
-            }
+
+            SetActiveItemServerRpc(newActiveItem?.ID ?? -1);
+            
         }
 
         [ServerRpc]
@@ -178,8 +175,7 @@ namespace BunnyPlayer
         {
             Item item = itemId == -1 ? null : ItemManager.GetItemByID(itemId);
             _activeItem = item;
-    
-            // Рассылаем всем клиентам
+            
             SyncActiveItemClientRpc(itemId);
         }
         [ObserversRpc]
@@ -191,66 +187,21 @@ namespace BunnyPlayer
             _handledItemSprite.sprite = _activeItem?.sprite;
         }
         
-        /*
-        public void ReceiveItem(Item item)
-        {
-            Debug.Log("Recieved:" + item);
-            
-            // Если предмет уже есть в инвентаре, увеличиваем его количество
-            if (Items.Exists(i => i == item))
-            {
-                var existingItem = Items.Find(i => i == item);
-                existingItem.count = 1;  // Устанавливаем count в 1, чтобы только один предмет был в руке
-                return; // Предмет не добавляем повторно
-            }
-
-            // Добавляем новый предмет в инвентарь
-            Items.Add(item);
-            item.count = 1; // Устанавливаем count в 1 для нового предмета
-            
-            SetActiveItem(item);
-        }
-
-        public void RemoveItem(Item item)
-        {
-            var itemInstance = Items.Find(i => i == item);
-    
-            // Если предмет в инвентаре, и его count равен 1, удаляем его
-            
-            if (itemInstance != null)
-            {
-                Items.Remove(item);
-                if (ActiveItem == item) ActiveItem = Items.LastOrDefault();
-                SetActiveItem(ActiveItem);
-            }
-            
-
-            //Debug.Log(ActiveItem);
-        }
-
-        private void SetActiveItem(Item newActiveItem)
-        {
-            if (!newActiveItem)
-            {
-                _handledItemSprite.sprite = null;
-                ActiveItem = null;
-                return;
-            }
-
-            ActiveItem = newActiveItem;
-            _handledItemSprite.sprite = ActiveItem.sprite;
-        }
-        */
 
         private void ChangeActiveItem(InputAction.CallbackContext context)
         {
             if (IsInventoryEmpty()) return;
 
-            var calculatedPos = Items.IndexOf(ActiveItem) + (int)_playerInput.Player.ChangeItem.ReadValue<float>();
+            var calculatedPos = ActiveItemIndex.Value + (int)_playerInput.Player.ChangeItem.ReadValue<float>();
             int newItemPos =
                 calculatedPos < 0 ? 0 : calculatedPos >= Items.Count ? Items.Count - 1 : calculatedPos;
 
+            ActiveItemIndex.Value = newItemPos;
+
+            Debug.Log("new active item index = " + newItemPos);
             var newActiveItem = Items.Count != 0 ? Items[newItemPos] : null;
+            Debug.Log("new active item  = " + newActiveItem);
+
             SetActiveItem(newActiveItem);
         }
 

@@ -39,8 +39,9 @@ namespace NPC
             
         [SerializeField] protected float interactRange = 1f;
         protected bool _canInteract = false;
-        
 
+
+        
         private void Awake()
         {
             _rb2d = GetComponent<Rigidbody2D>();
@@ -74,9 +75,8 @@ namespace NPC
 
         private void Update()
         {
-            //_nearbyPlayer = GetNearbyPlayer();
-           //UpdatePlayerComponents();
-            //_canInteract = _nearbyPlayer != null;
+
+            _canInteract = _nearbyPlayer != null;
 
             if (_canInteract)
             {
@@ -91,7 +91,7 @@ namespace NPC
 
             if (isAllowedToMove)
             {
-                StartCoroutine(Move());
+                _coroutine ??= StartCoroutine(Move());
             }
         }
         private void UpdatePlayerComponents()

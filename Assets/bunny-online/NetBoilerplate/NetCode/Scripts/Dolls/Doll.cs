@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using Dolls.Health;
 using Dolls.Movement;
 using Dolls.Rendering;
 using FishNet.Object;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class Doll : NetworkBehaviour
@@ -14,8 +16,36 @@ public class Doll : NetworkBehaviour
     [SerializeField] private DollMovement dollMovement;
 
     public Player PlayerOwner;
+    
+    private PlayerInput _playerInput;
     [field: SerializeField] public DollScore DollScore { get; private set; }
 
+    private void Awake()
+    {
+        _playerInput = new PlayerInput();
+        _playerInput.Enable();
+    }
+
+    private void OnEnable()
+    {
+        _playerInput.Player.Interact.started += Interact;
+    }
+
+    private void OnDisable()
+    {
+        _playerInput.Player.Interact.started -= Interact;
+    }
+    
+    public event Action<int> OnInteract; 
+    
+    
+    private void Interact(InputAction.CallbackContext context)
+    {
+        var id = (int)PlayerOwner.SteamID.m_SteamID;
+        OnInteract?.Invoke(id);
+    }
+    
+    
     public override void OnStartClient()
     {
         if (!IsOwner)
@@ -23,7 +53,6 @@ public class Doll : NetworkBehaviour
             characterCamera.gameObject.SetActive(false);
 
         }
-        
 
         StartCoroutine(WaitAndAssignMainCamera());
     }
