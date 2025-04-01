@@ -7,14 +7,15 @@ public class BootstrapManager : MonoBehaviour
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Confined;
+        SceneManager.LoadScene("Services", LoadSceneMode.Additive);
         StartCoroutine(LoadScenesAndUnloadCurrent());
     }
 
     private IEnumerator LoadScenesAndUnloadCurrent()
     {
         // Загрузить сцену "Services"
-        AsyncOperation loadServices = SceneManager.LoadSceneAsync("Services", LoadSceneMode.Additive);
-        yield return new WaitUntil(() => loadServices.isDone);
+        /*AsyncOperation loadServices = SceneManager.LoadSceneAsync("Services", LoadSceneMode.Additive);
+        yield return new WaitUntil(() => loadServices.isDone);*/
 
         // Загрузить сцену "Menu"
         AsyncOperation loadMenu = SceneManager.LoadSceneAsync("Menu", LoadSceneMode.Additive);
