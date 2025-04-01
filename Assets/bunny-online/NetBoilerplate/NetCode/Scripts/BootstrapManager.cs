@@ -17,6 +17,7 @@ public class BootstrapManager : MonoBehaviour
         /*AsyncOperation loadServices = SceneManager.LoadSceneAsync("Services", LoadSceneMode.Additive);
         yield return new WaitUntil(() => loadServices.isDone);*/
 
+        
         // Загрузить сцену "Menu"
         AsyncOperation loadMenu = SceneManager.LoadSceneAsync("Menu", LoadSceneMode.Additive);
         yield return new WaitUntil(() => loadMenu.isDone);
