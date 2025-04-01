@@ -8175,7 +8175,7 @@ GameObject:
   - component: {fileID: 1247699450}
   - component: {fileID: 1247699449}
   m_Layer: 0
-  m_Name: FFAManager
+  m_Name: Statistic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26141,6 +26141,30 @@ PrefabInstance:
     - target: {fileID: 1764336556659671680, guid: dfb0617e063995047a70429b0538ef69, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933236450095263034, guid: dfb0617e063995047a70429b0538ef69, type: 3}
+      propertyPath: color1.b
+      value: 0.57820517
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933236450095263034, guid: dfb0617e063995047a70429b0538ef69, type: 3}
+      propertyPath: color1.g
+      value: 0.7509433
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933236450095263034, guid: dfb0617e063995047a70429b0538ef69, type: 3}
+      propertyPath: color1.r
+      value: 0.14027049
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933236450095263034, guid: dfb0617e063995047a70429b0538ef69, type: 3}
+      propertyPath: color2.b
+      value: 0.3847473
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933236450095263034, guid: dfb0617e063995047a70429b0538ef69, type: 3}
+      propertyPath: color2.g
+      value: 0.32007825
+      objectReference: {fileID: 0}
+    - target: {fileID: 3933236450095263034, guid: dfb0617e063995047a70429b0538ef69, type: 3}
+      propertyPath: color2.r
+      value: 0.6981132
       objectReference: {fileID: 0}
     - target: {fileID: 3933236450095263034, guid: dfb0617e063995047a70429b0538ef69, type: 3}
       propertyPath: entryPrefab
